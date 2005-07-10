@@ -7,64 +7,49 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-[ -f /usr/bin/prelude-lml ] || exit 0
-
-prog="prelude-lml"
-
-start() {
-    if test "x`pidof prelude-lml`" != x; then
-            echo "Prelude-lml is already started"
-            action $"Starting $prog: " /bin/false
-            RETVAL=1
-            echo
-    else
-            echo -n $"Starting $prog: "
-            daemon prelude-lml -d
-            RETVAL=$?
-            [ $RETVAL -eq 0 ] && touch /var/lock/subsys/prelude-lml
-            echo
-    fi
-    return $RETVAL
-}
-
-stop() {
-    if test "x`pidof prelude-lml`" != x; then
-	echo -n $"Stopping $prog: "
-	killproc prelude-lml
-	echo
-    fi
-    RETVAL=$?
-    [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/prelude-lml 
-    return $RETVAL
-}
-
 case "$1" in
-	start)
-	    start
-	    ;;
-	
-	stop)
-	    stop
-	    ;;
-	
-	status)
-	    status prelude-lml
-	    ;;
-	restart)
-	    stop
-	    sleep 3
-	    start
-	    ;;
-	condrestart)
-	    if test "x`pidof prelude-lml`" != x; then
-		stop
-		start
+    start)
+	    if [ ! -f /var/lock/subsys/prelude-lml ]; then
+		msg_starting "Prelude LML"
+		daemon prelude-lml -d
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/prelude-lml
+	    else
+		msg_already_running "Prelude LML"
 	    fi
 	    ;;
 	
-	*)
-	    echo $"Usage: $0 {start|stop|restart|condrestart|status}"
-	    exit 1
+    stop)
+	    if [ -f /var/lock/subsys/prelude-lml ]; then
+		msg_stopping "Prelude LML"
+		killproc prelude-lml
+		rm -f /var/lock/subsys/prelude-lml
+	    fi
+	    ;;
+
+    restart)
+	    $0 stop
+	    $0 start
+	    exit $?
+    
+    reload|force-reload)
+	    if [ -f /var/lock/subsys/prelude-lml ]; then
+		msg_reloading "Prelude LML"
+		killproc prelude-lml -HUP
+		RETVAL=$?
+	    else
+		msg_not_running prelude-lml >&2
+		exit 7
+	    fi
+	    ;;
+
+    status)
+	    status prelude-lml
+    ;;
+
+    *)
+    echo $"Usage: $0 {start|stop|restart|condrestart|status}"
+    exit 1
 
 esac
 
