@@ -49,6 +49,22 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+/sbin/chkconfig --add prelude-lml
+if [ -f /var/lock/subsys/prelude-lml ]; then
+        /etc/rc.d/init.d/prelude-lml restart 1>&2
+else
+        echo "Run \"/etc/rc.d/init.d/prelude-lml start\" to start Prelude LML."
+fi
+
+%preun
+if [ "$1" = "0" ]; then
+        if [ -f /var/lock/subsys/prelude-lml ]; then
+                /etc/rc.d/init.d/prelude-lml stop 1>&2
+        fi
+        /sbin/chkconfig --del prelude-lml
+fi
+
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
