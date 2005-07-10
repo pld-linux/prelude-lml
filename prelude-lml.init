@@ -1,0 +1,71 @@
+#!/bin/sh
+# Startup script for prelude-lml
+#
+# chkconfig: 2345 98 01
+# description: Run prelude-lml
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+[ -f /usr/bin/prelude-lml ] || exit 0
+
+prog="prelude-lml"
+
+start() {
+    if test "x`pidof prelude-lml`" != x; then
+            echo "Prelude-lml is already started"
+            action $"Starting $prog: " /bin/false
+            RETVAL=1
+            echo
+    else
+            echo -n $"Starting $prog: "
+            daemon prelude-lml -d
+            RETVAL=$?
+            [ $RETVAL -eq 0 ] && touch /var/lock/subsys/prelude-lml
+            echo
+    fi
+    return $RETVAL
+}
+
+stop() {
+    if test "x`pidof prelude-lml`" != x; then
+	echo -n $"Stopping $prog: "
+	killproc prelude-lml
+	echo
+    fi
+    RETVAL=$?
+    [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/prelude-lml 
+    return $RETVAL
+}
+
+case "$1" in
+	start)
+	    start
+	    ;;
+	
+	stop)
+	    stop
+	    ;;
+	
+	status)
+	    status prelude-lml
+	    ;;
+	restart)
+	    stop
+	    sleep 3
+	    start
+	    ;;
+	condrestart)
+	    if test "x`pidof prelude-lml`" != x; then
+		stop
+		start
+	    fi
+	    ;;
+	
+	*)
+	    echo $"Usage: $0 {start|stop|restart|condrestart|status}"
+	    exit 1
+
+esac
+
+exit 0
