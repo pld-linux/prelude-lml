@@ -30,7 +30,7 @@ danych od innych aplikacji, takich jak NTSyslog.
 Summary:	Header files for prelude-lml
 Summary(pl):	Pliki nag³ówkowe dla prelude-lml
 Group:		Development/Libraries
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 Header files for prelude-lml.
