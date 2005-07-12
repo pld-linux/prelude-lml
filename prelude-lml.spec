@@ -1,4 +1,5 @@
 Summary:	A Network Intrusion Detection System
+Summary(pl):	System wykrywania intruzów w sieci
 Name:		prelude-lml
 %define	_rc	rc4
 Version:	0.9.0
@@ -10,9 +11,9 @@ Source0:	http://www.prelude-ids.org/download/releases/%{name}-%{version}-%{_rc}.
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.prelude-ids.org/
+BuildRequires:	fam-devel
 BuildRequires:	libprelude-devel >= 0.9.0
 BuildRequires:	pcre-devel
-BuildRequires:	fam-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -20,13 +21,22 @@ Prelude LML analyze log files and transmit to prelude some
 informations. Prelude LML also use syslog to listen for some others
 applications, like NTSyslog.
 
+%description -l pl
+Prelude LML analizuje pliki logów i przesy³a trochê informacji do
+Prelude. Prelude LML mo¿e tak¿e u¿ywaæ sysloga, aby nas³uchiwa³
+danych od innych aplikacji, takich jak NTSyslog.
+
 %package devel
-Summary:	Header files and develpment documentation for prelude-lmi
+Summary:	Header files for prelude-lml
+Summary(pl):	Pliki nag³ówkowe dla prelude-lml
 Group:		Development/Libraries
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description devel
-Header files and develpment documentation for prelude-lmi.
+Header files for prelude-lml.
+
+%description devel -l pl
+Pliki nag³ówkowe dla prelude-lml.
 
 %prep
 %setup -q -n %{name}-%{version}-%{_rc}
@@ -37,7 +47,6 @@ Header files and develpment documentation for prelude-lmi.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 
 %{__make} install \
