@@ -1,13 +1,12 @@
 Summary:	A network intrusion detection system
 Summary(pl):	System wykrywania intruzów w sieci
 Name:		prelude-lml
-%define	_rc	rc4
-Version:	0.9.0
-Release:	0.%{_rc}.1
+Version:	0.9.4
+Release:	0.1
 License:	GPL
 Group:		Applications
-Source0:	http://www.prelude-ids.org/download/releases/%{name}-%{version}-%{_rc}.tar.gz
-# Source0-md5:	c77f4441e53b47e684269b7e66a404de
+Source0:	http://www.prelude-ids.org/download/releases/%{name}-%{version}.tar.gz
+# Source0-md5:	33ed8f9428df64778041e4d8fe41c479
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.prelude-ids.org/
@@ -39,7 +38,7 @@ Header files for prelude-lml.
 Pliki nag³ówkowe dla prelude-lml.
 
 %prep
-%setup -q -n %{name}-%{version}-%{_rc}
+%setup -q -n %{name}-%{version}
 
 %build
 %configure
@@ -84,7 +83,6 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %dir %{_sysconfdir}/%{name}
-%dir %{_sysconfdir}/%{name}/metadata
 %{_sysconfdir}/%{name}/ruleset
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/*.*
 
