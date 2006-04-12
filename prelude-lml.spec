@@ -2,7 +2,7 @@ Summary:	A network intrusion detection system
 Summary(pl):	System wykrywania intruzów w sieci
 Name:		prelude-lml
 Version:	0.9.4
-Release:	0.2
+Release:	0.3
 License:	GPL
 Group:		Applications
 Source0:	http://www.prelude-ids.org/download/releases/%{name}-%{version}.tar.gz
@@ -54,6 +54,8 @@ install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
+install -d $RPM_BUILD_ROOT/var/lib/%{name}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -62,8 +64,23 @@ rm -rf $RPM_BUILD_ROOT
 if [ -f /var/lock/subsys/prelude-lml ]; then
 	%service prelude-lml restart 1>&2
 else
+	echo "Remember to register with prelude-manager before first launch:"
+	echo "prelude-adduser register prelude-lml "idmef:w" <manager address> --uid 0 --gid 0"
+	echo ""
 	echo "Run \"/sbin/service prelude-lml start\" to start Prelude LML."
 fi
+
+#
+# TODO: 
+#
+# register with prelude-manager:
+#
+# on one console:
+# prelude-adduser registration-server prelude-manager
+# 	(remember one shot password)
+# on the second one:
+# prelude-adduser register prelude-lml "idmef:w" <manager address> --uid 0 --gid 0
+#	(enter the password)
 
 %preun
 if [ "$1" = "0" ]; then
@@ -83,6 +100,7 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %dir %{_sysconfdir}/%{name}
+%dir /var/lib/%{name}
 %{_sysconfdir}/%{name}/ruleset
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/*.*
 
