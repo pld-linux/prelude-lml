@@ -38,7 +38,7 @@ Header files for prelude-lml.
 Pliki nag³ówkowe dla prelude-lml.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q
 
 %build
 %configure
