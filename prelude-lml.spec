@@ -13,6 +13,9 @@ URL:		http://www.prelude-ids.org/
 BuildRequires:	fam-devel
 BuildRequires:	libprelude-devel >= 0.9.0
 BuildRequires:	pcre-devel
+BuildRequires:	rpmbuild(macros) >= 1.268
+Requires(post,preun):	/sbin/chkconfig
+Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -22,8 +25,8 @@ applications, like NTSyslog.
 
 %description -l pl
 Prelude LML analizuje pliki logów i przesy³a trochê informacji do
-Prelude. Prelude LML mo¿e tak¿e u¿ywaæ sysloga, aby nas³uchiwa³
-danych od innych aplikacji, takich jak NTSyslog.
+Prelude. Prelude LML mo¿e tak¿e u¿ywaæ sysloga, aby nas³uchiwa³ danych
+od innych aplikacji, takich jak NTSyslog.
 
 %package devel
 Summary:	Header files for prelude-lml
@@ -61,17 +64,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add prelude-lml
-if [ -f /var/lock/subsys/prelude-lml ]; then
-	%service prelude-lml restart 1>&2
-else
+%service prelude-lml restart
+if [ "$1" = 1 ]; then
 	echo "Remember to register with prelude-manager before first launch:"
-	echo "prelude-adduser register prelude-lml "idmef:w" <manager address> --uid 0 --gid 0"
+	echo "prelude-adduser register prelude-lml \"idmef:w\" <manager address> --uid 0 --gid 0"
 	echo ""
 	echo "Run \"/sbin/service prelude-lml start\" to start Prelude LML."
 fi
 
 #
-# TODO: 
+# TODO:
 #
 # register with prelude-manager:
 #
@@ -84,9 +86,7 @@ fi
 
 %preun
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/prelude-lml ]; then
-		%service prelude-lml stop 1>&2
-	fi
+	%service prelude-lml stop
 	/sbin/chkconfig --del prelude-lml
 fi
 
