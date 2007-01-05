@@ -21,7 +21,7 @@ case "$1" in
     start)
 	    if [ ! -f /var/lock/subsys/prelude-lml ]; then
 		msg_starting "Prelude LML"
-		daemon $SERVICE_RUN_NICE_LEVEL prelude-lml -d
+		daemon prelude-lml -d
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/prelude-lml
 	    else
