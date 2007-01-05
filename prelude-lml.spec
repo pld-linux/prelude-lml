@@ -1,21 +1,25 @@
+%bcond_without	fam
+%bcond_without	unsupported_rulesets
+
 Summary:	A network intrusion detection system
 Summary(pl):	System wykrywania intruzów w sieci
 Name:		prelude-lml
-Version:	0.9.4
-Release:	0.3
+Version:	0.9.8.1
+Release:	1
 License:	GPL
 Group:		Applications
 Source0:	http://www.prelude-ids.org/download/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	33ed8f9428df64778041e4d8fe41c479
+# Source0-md5:	9304593d58d2aa1268760c93150ab8db
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.prelude-ids.org/
-BuildRequires:	fam-devel
+%{?with_fam:BuildRequires:	fam-devel}
 BuildRequires:	libprelude-devel >= 0.9.0
 BuildRequires:	pcre-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
+Requires:	%{name}-libs = %{version} 
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -27,6 +31,29 @@ applications, like NTSyslog.
 Prelude LML analizuje pliki logów i przesy³a trochê informacji do
 Prelude. Prelude LML mo¿e tak¿e u¿ywaæ sysloga, aby nas³uchiwa³ danych
 od innych aplikacji, takich jak NTSyslog.
+
+%package libs
+Summary:	Prelude-lml shared libraries
+Summary(pl):	Biblioteki dzielone prelude-lml
+Group:		Libraries
+
+%description libs
+Prelude-lml shared libraries.
+
+%description libs -l pl
+Biblioteki dzielone prelude-lml.
+
+%package static
+Summary:	Static prelude-lml library
+Summary(pl):	Statyczna biblioteka prelude-lml
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+
+%description static
+Static prelude-lml library.
+
+%description static -l pl
+Statyczna biblioteka prelude-lml.
 
 %package devel
 Summary:	Header files for prelude-lml
@@ -44,7 +71,11 @@ Pliki nag³ówkowe dla prelude-lml.
 %setup -q
 
 %build
-%configure
+%configure \
+	--enable-shared \
+	--enable-static \
+	--with%{!?with_fam:out}-fam \
+	--%{!?with_unsupported_rulesets:dis}%{?with_unsupported_rulesets:en}able-unsupported_rulesets
 %{__make}
 
 %install
@@ -64,25 +95,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add prelude-lml
-%service prelude-lml restart
-if [ "$1" = 1 ]; then
-	echo "Remember to register with prelude-manager before first launch:"
-	echo "prelude-adduser register prelude-lml \"idmef:w\" <manager address> --uid 0 --gid 0"
-	echo ""
-	echo "Run \"/sbin/service prelude-lml start\" to start Prelude LML."
-fi
+if [ "$1" = "1" ]; then
+%banner -e %{name} <<EOF
+Remember to register with prelude-manager before first launch:
+prelude-adduser register prelude-lml "idmef:w admin:r" <manager address> --uid 0 --gid 0
 
-#
-# TODO:
-#
-# register with prelude-manager:
-#
-# on one console:
-# prelude-adduser registration-server prelude-manager
-# 	(remember one shot password)
-# on the second one:
-# prelude-adduser register prelude-lml "idmef:w" <manager address> --uid 0 --gid 0
-#	(enter the password)
+EOF
+fi
+%service prelude-lml restart
 
 %preun
 if [ "$1" = "0" ]; then
@@ -94,15 +114,22 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
 %attr(755,root,root) %{_bindir}/%{name}
-%dir %{_libdir}/%{name}
-%attr(755,root,root) %{_libdir}/%{name}/*.so
-%{_libdir}/%{name}/*.la
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %dir %{_sysconfdir}/%{name}
 %dir /var/lib/%{name}
 %{_sysconfdir}/%{name}/ruleset
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/*.*
+
+%files libs
+%defattr(644,root,root,755)
+%dir %{_libdir}/%{name}
+%attr(755,root,root) %{_libdir}/%{name}/*.so
+%{_libdir}/%{name}/*.la
+
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/%{name}/*.a
 
 %files devel
 %defattr(644,root,root,755)
