@@ -5,7 +5,7 @@ Summary:	A network intrusion detection system
 Summary(pl):	System wykrywania intruzów w sieci
 Name:		prelude-lml
 Version:	0.9.8.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications
 Source0:	http://www.prelude-ids.org/download/releases/%{name}-%{version}.tar.gz
@@ -85,6 +85,9 @@ install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+# are generating wrong dependencies (and are not needed anyway)
+find $RPM_BUILD_ROOT -iregex .*.la -exec rm {} \;
+
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
@@ -118,14 +121,13 @@ fi
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %dir %{_sysconfdir}/%{name}
 %dir /var/lib/%{name}
-%{_sysconfdir}/%{name}/ruleset
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/*.*
+%{_sysconfdir}/%{name}/ruleset
 
 %files libs
 %defattr(644,root,root,755)
 %dir %{_libdir}/%{name}
 %attr(755,root,root) %{_libdir}/%{name}/*.so
-%{_libdir}/%{name}/*.la
 
 %files static
 %defattr(644,root,root,755)
