@@ -1,6 +1,8 @@
+#
+# Conditional build:
 %bcond_without	fam
 %bcond_without	unsupported_rulesets
-
+#
 Summary:	A network intrusion detection system
 Summary(pl):	System wykrywania intruzów w sieci
 Name:		prelude-lml
