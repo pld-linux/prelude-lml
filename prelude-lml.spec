@@ -45,18 +45,6 @@ Prelude-lml shared libraries.
 %description libs -l pl
 Biblioteki dzielone prelude-lml.
 
-%package static
-Summary:	Static prelude-lml library
-Summary(pl):	Statyczna biblioteka prelude-lml
-Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
-
-%description static
-Static prelude-lml library.
-
-%description static -l pl
-Statyczna biblioteka prelude-lml.
-
 %package devel
 Summary:	Header files for prelude-lml
 Summary(pl):	Pliki nag³ówkowe dla prelude-lml
@@ -68,6 +56,18 @@ Header files for prelude-lml.
 
 %description devel -l pl
 Pliki nag³ówkowe dla prelude-lml.
+
+%package static
+Summary:	Static prelude-lml library
+Summary(pl):	Statyczna biblioteka prelude-lml
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+
+%description static
+Static prelude-lml library.
+
+%description static -l pl
+Statyczna biblioteka prelude-lml.
 
 %prep
 %setup -q
@@ -88,7 +88,7 @@ install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 	DESTDIR=$RPM_BUILD_ROOT
 
 # are generating wrong dependencies (and are not needed anyway)
-find $RPM_BUILD_ROOT -iregex .*.la -exec rm {} \;
+rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
@@ -131,10 +131,10 @@ fi
 %dir %{_libdir}/%{name}
 %attr(755,root,root) %{_libdir}/%{name}/*.so
 
-%files static
-%defattr(644,root,root,755)
-%{_libdir}/%{name}/*.a
-
 %files devel
 %defattr(644,root,root,755)
 %{_includedir}/%{name}
+
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/%{name}/*.a
