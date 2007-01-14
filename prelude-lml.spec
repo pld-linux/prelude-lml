@@ -21,7 +21,6 @@ BuildRequires:	pcre-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
-Requires:	%{name}-libs = %{version} 
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -34,22 +33,11 @@ Prelude LML analizuje pliki logów i przesy³a trochê informacji do
 Prelude. Prelude LML mo¿e tak¿e u¿ywaæ sysloga, aby nas³uchiwa³ danych
 od innych aplikacji, takich jak NTSyslog.
 
-%package libs
-Summary:	Prelude-lml shared libraries
-Summary(pl):	Biblioteki dzielone prelude-lml
-Group:		Libraries
-
-%description libs
-Prelude-lml shared libraries.
-
-%description libs -l pl
-Biblioteki dzielone prelude-lml.
-
 %package devel
 Summary:	Header files for prelude-lml
 Summary(pl):	Pliki nag³ówkowe dla prelude-lml
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	libprelude-devel >= 0.9.0
 
 %description devel
 Header files for prelude-lml.
@@ -57,25 +45,11 @@ Header files for prelude-lml.
 %description devel -l pl
 Pliki nag³ówkowe dla prelude-lml.
 
-%package static
-Summary:	Static prelude-lml library
-Summary(pl):	Statyczna biblioteka prelude-lml
-Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
-
-%description static
-Static prelude-lml library.
-
-%description static -l pl
-Statyczna biblioteka prelude-lml.
-
 %prep
 %setup -q
 
 %build
 %configure \
-	--enable-shared \
-	--enable-static \
 	--with%{!?with_fam:out}-fam \
 	--%{!?with_unsupported_rulesets:dis}%{?with_unsupported_rulesets:en}able-unsupported_rulesets
 %{__make}
@@ -119,6 +93,8 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
 %attr(755,root,root) %{_bindir}/%{name}
+%dir %{_libdir}/%{name}
+%attr(755,root,root) %{_libdir}/%{name}/*.so
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %dir %{_sysconfdir}/%{name}
@@ -126,15 +102,6 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/*.*
 %{_sysconfdir}/%{name}/ruleset
 
-%files libs
-%defattr(644,root,root,755)
-%dir %{_libdir}/%{name}
-%attr(755,root,root) %{_libdir}/%{name}/*.so
-
 %files devel
 %defattr(644,root,root,755)
 %{_includedir}/%{name}
-
-%files static
-%defattr(644,root,root,755)
-%{_libdir}/%{name}/*.a
