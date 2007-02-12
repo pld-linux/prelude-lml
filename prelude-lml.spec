@@ -4,7 +4,7 @@
 %bcond_without	unsupported_rulesets	# build without unsupported rulesets
 #
 Summary:	A network intrusion detection system
-Summary(pl):	System wykrywania intruzÛw w sieci
+Summary(pl.UTF-8):   System wykrywania intruz√≥w w sieci
 Name:		prelude-lml
 Version:	0.9.8.1
 Release:	2
@@ -28,22 +28,22 @@ Prelude LML analyze log files and transmit to prelude some
 informations. Prelude LML also use syslog to listen for some others
 applications, like NTSyslog.
 
-%description -l pl
-Prelude LML analizuje pliki logÛw i przesy≥a trochÍ informacji do
-Prelude. Prelude LML moøe takøe uøywaÊ sysloga, aby nas≥uchiwa≥ danych
+%description -l pl.UTF-8
+Prelude LML analizuje pliki log√≥w i przesy≈Ça trochƒô informacji do
+Prelude. Prelude LML mo≈ºe tak≈ºe u≈ºywaƒá sysloga, aby nas≈Çuchiwa≈Ç danych
 od innych aplikacji, takich jak NTSyslog.
 
 %package devel
 Summary:	Header files for prelude-lml
-Summary(pl):	Pliki nag≥Ûwkowe dla prelude-lml
+Summary(pl.UTF-8):   Pliki nag≈Ç√≥wkowe dla prelude-lml
 Group:		Development/Libraries
 Requires:	libprelude-devel >= 0.9.0
 
 %description devel
 Header files for prelude-lml.
 
-%description devel -l pl
-Pliki nag≥Ûwkowe dla prelude-lml.
+%description devel -l pl.UTF-8
+Pliki nag≈Ç√≥wkowe dla prelude-lml.
 
 %prep
 %setup -q
