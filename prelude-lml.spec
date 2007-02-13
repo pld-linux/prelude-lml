@@ -4,7 +4,7 @@
 %bcond_without	unsupported_rulesets	# build without unsupported rulesets
 #
 Summary:	A network intrusion detection system
-Summary(pl.UTF-8):   System wykrywania intruzów w sieci
+Summary(pl.UTF-8):	System wykrywania intruzów w sieci
 Name:		prelude-lml
 Version:	0.9.8.1
 Release:	2
@@ -35,7 +35,7 @@ od innych aplikacji, takich jak NTSyslog.
 
 %package devel
 Summary:	Header files for prelude-lml
-Summary(pl.UTF-8):   Pliki nagłówkowe dla prelude-lml
+Summary(pl.UTF-8):	Pliki nagłówkowe dla prelude-lml
 Group:		Development/Libraries
 Requires:	libprelude-devel >= 0.9.0
 
