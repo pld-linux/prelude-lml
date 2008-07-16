@@ -6,20 +6,22 @@
 Summary:	A network intrusion detection system
 Summary(pl.UTF-8):	System wykrywania intruzów w sieci
 Name:		prelude-lml
-Version:	0.9.11
+Version:	0.9.12.2
 Release:	1
-License:	GPL
+License:	GPL v2+
 Group:		Applications
-Source0:	http://www.prelude-ids.org/download/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	3f9e097b3535041913cc1fa0b8964a73
+#Source0Download: http://www.prelude-ids.com/developpement/telechargement/index.html
+Source0:	http://www.prelude-ids.com/download/releases/prelude-lml/%{name}-%{version}.tar.gz
+# Source0-md5:	f13df3fdee98f6ceb5519d1a71cdf87f
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
-URL:		http://www.prelude-ids.org/
+URL:		http://www.prelude-ids.com/
 %{?with_fam:BuildRequires:	fam-devel}
-BuildRequires:	libprelude-devel >= 0.9.0
-BuildRequires:	pcre-devel
+BuildRequires:	libprelude-devel >= 0.9.8
+BuildRequires:	pcre-devel >= 4.1
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
+Requires:	libprelude >= 0.9.8
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -37,7 +39,7 @@ od innych aplikacji, takich jak NTSyslog.
 Summary:	Header files for prelude-lml
 Summary(pl.UTF-8):	Pliki nagłówkowe dla prelude-lml
 Group:		Development/Libraries
-Requires:	libprelude-devel >= 0.9.0
+Requires:	libprelude-devel >= 0.9.8
 
 %description devel
 Header files for prelude-lml.
