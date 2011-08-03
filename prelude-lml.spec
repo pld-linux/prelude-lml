@@ -6,18 +6,18 @@
 Summary:	A network intrusion detection system
 Summary(pl.UTF-8):	System wykrywania intruzów w sieci
 Name:		prelude-lml
-Version:	0.9.12.2
+Version:	1.0.0
 Release:	1
 License:	GPL v2+
 Group:		Applications
 #Source0Download: http://www.prelude-ids.com/developpement/telechargement/index.html
 Source0:	http://www.prelude-ids.com/download/releases/prelude-lml/%{name}-%{version}.tar.gz
-# Source0-md5:	f13df3fdee98f6ceb5519d1a71cdf87f
+# Source0-md5:	7bf0b9081eedf3fd58bb41a9695b121a
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.prelude-ids.com/
 %{?with_fam:BuildRequires:	fam-devel}
-BuildRequires:	libprelude-devel >= 0.9.8
+BuildRequires:	libprelude-devel >= %{version}
 BuildRequires:	pcre-devel >= 4.1
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
