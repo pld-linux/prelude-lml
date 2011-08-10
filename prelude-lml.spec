@@ -3,8 +3,8 @@
 %bcond_without	fam			# build without FAM support
 %bcond_without	unsupported_rulesets	# build without unsupported rulesets
 #
-Summary:	A network intrusion detection system
-Summary(pl.UTF-8):	System wykrywania intruzów w sieci
+Summary:	A network intrusion detection system - log analyzer
+Summary(pl.UTF-8):	System wykrywania intruzów w sieci - analizator logów
 Name:		prelude-lml
 Version:	1.0.0
 Release:	1
