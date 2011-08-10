@@ -17,6 +17,7 @@ Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.prelude-ids.com/
 %{?with_fam:BuildRequires:	fam-devel}
+BuildRequires:	libicu-devel >= 3.0
 BuildRequires:	libprelude-devel >= %{version}
 BuildRequires:	pcre-devel >= 4.1
 BuildRequires:	rpmbuild(macros) >= 1.268
