@@ -1,28 +1,24 @@
-#
-# Conditional build:
-%bcond_without	fam			# build without FAM support
-%bcond_without	unsupported_rulesets	# build without unsupported rulesets
-#
 Summary:	A network intrusion detection system - log analyzer
 Summary(pl.UTF-8):	System wykrywania intruzów w sieci - analizator logów
 Name:		prelude-lml
-Version:	1.0.0
+Version:	1.2.6
 Release:	1
 License:	GPL v2+
 Group:		Applications
-#Source0Download: http://www.prelude-ids.com/developpement/telechargement/index.html
-Source0:	http://www.prelude-ids.com/download/releases/prelude-lml/%{name}-%{version}.tar.gz
-# Source0-md5:	7bf0b9081eedf3fd58bb41a9695b121a
+#Source0Download: https://www.prelude-siem.org/projects/prelude/files
+Source0:	https://www.prelude-siem.org/attachments/download/411/%{name}-%{version}.tar.gz
+# Source0-md5:	774afee99d96e06a0ebec8c0320b9d2b
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
-URL:		http://www.prelude-ids.com/
-%{?with_fam:BuildRequires:	fam-devel}
+URL:		https://www.prelude-siem.org/
+BuildRequires:	gnutls-devel >= 1.0.17
 BuildRequires:	libicu-devel >= 3.0
 BuildRequires:	libprelude-devel >= %{version}
 BuildRequires:	pcre-devel >= 4.1
-BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	rpmbuild(macros) >= 1.644
 Requires(post,preun):	/sbin/chkconfig
-Requires:	libprelude >= 0.9.8
+Requires:	gnutls >= 1.0.17
+Requires:	libprelude >= %{version}
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -52,9 +48,7 @@ Pliki nagłówkowe dla prelude-lml.
 %setup -q
 
 %build
-%configure \
-	--with%{!?with_fam:out}-fam \
-	--%{!?with_unsupported_rulesets:dis}%{?with_unsupported_rulesets:en}able-unsupported_rulesets
+%configure
 %{__make}
 
 %install
@@ -65,12 +59,16 @@ install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 	DESTDIR=$RPM_BUILD_ROOT
 
 # are generating wrong dependencies (and are not needed anyway)
-rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
 install -d $RPM_BUILD_ROOT/var/lib/%{name}
+install -d $RPM_BUILD_ROOT%{systemdtmpfilesdir}
+cat >$RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf <<EOF
+d /var/run/%{name} 0700 root root -
+EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -101,9 +99,11 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %dir %{_sysconfdir}/%{name}
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/plugins.rules
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/prelude-lml.conf
+%{systemdtmpfilesdir}/%{name}.conf
 %dir /var/lib/%{name}
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/*.*
-%{_sysconfdir}/%{name}/ruleset
+%dir /var/run/%{name}
 
 %files devel
 %defattr(644,root,root,755)
