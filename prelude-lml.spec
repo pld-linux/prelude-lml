@@ -5,18 +5,18 @@
 Summary:	A network intrusion detection system - log analyzer
 Summary(pl.UTF-8):	System wykrywania intruzów w sieci - analizator logów
 Name:		prelude-lml
-Version:	3.1.0
-Release:	4
+Version:	4.1.0
+Release:	1
 License:	GPL v2+
 Group:		Applications
 #Source0Download: https://www.prelude-siem.org/projects/prelude/files
-Source0:	https://www.prelude-siem.org/attachments/download/724/%{name}-%{version}.tar.gz
-# Source0-md5:	2433f9dc036f8e4a01fb05adbf9aafb1
+Source0:	https://www.prelude-siem.org/attachments/download/834/%{name}-%{version}.tar.gz
+# Source0-md5:	bb2f28378e1c01c6ba6171165076e0eb
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		https://www.prelude-siem.org/
 BuildRequires:	gnutls-devel >= 1.0.17
-BuildRequires:	libicu-devel >= 3.0
+BuildRequires:	libicu-devel >= 3.8
 %{?with_system_libev:BuildRequires:	libev-devel}
 BuildRequires:	libprelude-devel >= %{version}
 BuildRequires:	pcre-devel >= 4.1
@@ -25,6 +25,7 @@ BuildRequires:	rpmbuild(macros) >= 1.644
 Requires(post,preun):	/sbin/chkconfig
 Requires:	gnutls >= 1.0.17
 Requires:	libprelude >= %{version}
+Requires:	pcre >= 4.1
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
