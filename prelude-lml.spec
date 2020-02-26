@@ -5,13 +5,13 @@
 Summary:	A network intrusion detection system - log analyzer
 Summary(pl.UTF-8):	System wykrywania intruzów w sieci - analizator logów
 Name:		prelude-lml
-Version:	4.1.0
-Release:	6
+Version:	5.1.0
+Release:	1
 License:	GPL v2+
 Group:		Applications
 #Source0Download: https://www.prelude-siem.org/projects/prelude/files
-Source0:	https://www.prelude-siem.org/attachments/download/834/%{name}-%{version}.tar.gz
-# Source0-md5:	bb2f28378e1c01c6ba6171165076e0eb
+Source0:	https://www.prelude-siem.org/attachments/download/1175/%{name}-%{version}.tar.gz
+# Source0-md5:	d3fb98b9fef480fe843d606742a168e5
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		https://www.prelude-siem.org/
