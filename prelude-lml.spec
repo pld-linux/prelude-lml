@@ -5,13 +5,13 @@
 Summary:	A network intrusion detection system - log analyzer
 Summary(pl.UTF-8):	System wykrywania intruzów w sieci - analizator logów
 Name:		prelude-lml
-Version:	5.1.0
-Release:	7
+Version:	5.2.0
+Release:	1
 License:	GPL v2+
 Group:		Applications
 #Source0Download: https://www.prelude-siem.org/projects/prelude/files
-Source0:	https://www.prelude-siem.org/attachments/download/1175/%{name}-%{version}.tar.gz
-# Source0-md5:	d3fb98b9fef480fe843d606742a168e5
+Source0:	https://www.prelude-siem.org/attachments/download/1397/%{name}-%{version}.tar.gz
+# Source0-md5:	18cd63d730fb6878cb9adc3bfdd989c0
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		https://www.prelude-siem.org/
@@ -111,18 +111,18 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
-%attr(755,root,root) %{_bindir}/%{name}
+%attr(755,root,root) %{_bindir}/prelude-lml
 %dir %{_libdir}/%{name}
 %attr(755,root,root) %{_libdir}/%{name}/*.so
-%attr(754,root,root) /etc/rc.d/init.d/%{name}
-%config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
+%attr(754,root,root) /etc/rc.d/init.d/prelude-lml
+%config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/prelude-lml
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/plugins.rules
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/prelude-lml.conf
-%{systemdtmpfilesdir}/%{name}.conf
+%{systemdtmpfilesdir}/prelude-lml.conf
 %dir /var/lib/%{name}
 %dir /var/run/%{name}
 
 %files devel
 %defattr(644,root,root,755)
-%{_includedir}/%{name}
+%{_includedir}/prelude-lml
